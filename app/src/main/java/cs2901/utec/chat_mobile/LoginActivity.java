@@ -61,6 +61,7 @@ public class LoginActivity extends AppCompatActivity {
                         String message = response.getString("message");
                         if(message.equals("Authorized")) {
                             showMessage("Authenticated");
+                            startActivity(new Intent(LoginActivity.this,MainActivity.class));
                         }
                         else {
                             showMessage("Wrong username or password");
