@@ -46,6 +46,22 @@ public class MessageActivity extends AppCompatActivity {
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         getChats();
+        Runnable runnable = new Runnable(){
+            @Override
+            public void run(){
+                while(true){
+                    try {
+                        Thread.sleep(6000);
+                        getChats();
+                    }
+                    catch (InterruptedException e){
+                        e.printStackTrace();
+                    }
+                }
+            }
+        };
+        Thread hilo = new Thread(runnable);
+        hilo.start();
     }
 
     public void onClickBtnSend(View v) {
@@ -72,6 +88,7 @@ public class MessageActivity extends AppCompatActivity {
                             int uID = Integer.parseInt(userFromId);
                             mAdapter = new MyMessageAdapter(data, getActivity(), uID);
                             mRecyclerView.setAdapter(mAdapter);
+                            mRecyclerView.smoothScrollToPosition(mRecyclerView.getAdapter().getItemCount());
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -117,6 +134,7 @@ public class MessageActivity extends AppCompatActivity {
             }
         });
         queue.add(jsonObjectRequest);
-
+        EditText editTextSend = (EditText)findViewById(R.id.txtMessage);
+        editTextSend.setText("");
     }
 }
